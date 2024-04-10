@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef unsigned long long ull;
+typedef unsigned int ust;
+typedef short sr;
+
+ifstream fin("secvmaxval.in");
+ofstream fout("secvmaxval.out");
+
+uint64_t sumPar[200002], vec[200002], k;
+
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    fin.tie(nullptr);
+    fout.tie(nullptr);
+
+    ust n;
+    fin >> n >> k;
+
+    for(ust i = 1; i <= n; ++ i){
+        fin >> vec[i];
+        sumPar[i] += vec[i] + sumPar[i - 1];
+    }
+    
+    if(sumPar[n] <= k){
+        fout << n;
+        return 0;
+    }
+
+    ust secvMax = 0;
+    for(ust i = 0, j = 1; i <= n and j <= n;){
+        if((sumPar[j] - sumPar[i]) * 1ULL <= k){
+            ++ j;
+        }
+        else{
+            ++ i;
+            secvMax = max(secvMax, j - i);
+        }
+
+    }
+
+    fout << secvMax;
+    return 0;
+}
